@@ -66,6 +66,13 @@ export const useUserStore = defineStore('user', () => {
     localStorage.removeItem('authToken');
   }
 
+  function getAuthHeader() {
+    if (!token.value) return {};
+    return {
+      'Authorization': `******
+    };
+  }
+
   return {
     token,
     user,
@@ -74,6 +81,7 @@ export const useUserStore = defineStore('user', () => {
     verifyMagicLink,
     fetchCurrentUser,
     setToken,
-    logout
+    logout,
+    getAuthHeader
   };
 });
