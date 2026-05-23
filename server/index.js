@@ -13,6 +13,7 @@ const __dirname = dirname(__filename);
 // Create Express app
 const app = express();
 const PORT = process.env.PORT || 3000;
+const NODE_ENV = process.env.NODE_ENV || 'development';
 
 // ========== MIDDLEWARE ==========
 app.use(cors({
@@ -20,54 +21,43 @@ app.use(cors({
   credentials: true
 }));
 
-app.use(express.json({ limit: '64kb' })); // Enforce 64KB limit per spec
+// Enforce 64KB size limit per MVP spec
+app.use(express.json({ limit: '64kb' }));
 app.use(express.urlencoded({ limit: '64kb', extended: true }));
 
 // Request logging middleware
 app.use((req, res, next) => {
   const timestamp = new Date().toISOString();
-  console.log(`[${timestamp}] ${req.method} ${req.path}`);
+  console.log(`[${timestamp}] ${req.method.padEnd(6)} ${req.path}`);
   next();
 });
 
-// ========== ROUTES (to be imported) ==========
-// Auth routes
-import authRoutes from './routes/auth.js';
-app.use('/api/v1/auth', authRoutes);
+// ========== API ROUTES ==========
+import apiRoutes from './routes/api.js';
+app.use('/api/v1', apiRoutes);
 
-// Snippet routes
-import snippetRoutes from './routes/snippets.js';
-app.use('/api/v1/snippets', snippetRoutes);
-
-// Transform routes
-import transformRoutes from './routes/transform.js';
-app.use('/api/v1/transform', transformRoutes);
-
-// Share/Public routes
-import shareRoutes from './routes/share.js';
-app.use('/api/v1/share', shareRoutes);
-
-// Admin routes
-import adminRoutes from './routes/admin.js';
-app.use('/api/v1/admin', adminRoutes);
-
-// Health check
-app.get('/api/v1/health', (req, res) => {
+// ========== HEALTH CHECK ==========
+app.get('/health', (req, res) => {
   res.json({
     status: 'ok',
+    environment: NODE_ENV,
     timestamp: new Date().toISOString(),
     uptime: process.uptime()
   });
 });
 
+// ========== STATIC FILES ==========
+app.use(express.static('dist'));
+
 // ========== ERROR HANDLING ==========
 app.use((err, req, res, next) => {
-  console.error('Error:', err.message);
+  console.error('❌ Error:', err.message);
   res.status(err.statusCode || 500).json({
     error: {
       message: err.message || 'Internal server error',
       code: err.code || 'UNKNOWN_ERROR',
-      statusCode: err.statusCode || 500
+      statusCode: err.statusCode || 500,
+      timestamp: new Date().toISOString()
     }
   });
 });
@@ -84,14 +74,26 @@ app.use((req, res) => {
 });
 
 // ========== START SERVER ==========
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`
-╔════════════════════════════════════════╗
-║  SALTEDHASH Dev Suite - Backend        ║
-║  Server running on port ${PORT}        ║
-║  Environment: ${process.env.NODE_ENV || 'development'}       ║
-╚════════════════════════════════════════╝
+╔═══════════════════════════════════════════╗
+║  ⚡ SALTEDHASH Dev Suite                 ║
+║  Backend Service Online                  ║
+╟───────────────────────────────────────────╢
+║  PORT: ${PORT.toString().padEnd(36)}║
+║  ENV:  ${NODE_ENV.padEnd(36)}║
+║  TIME: ${new Date().toISOString()}   ║
+╚═══════════════════════════════════════════╝
   `);
+});
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+  console.log('📌 SIGTERM received, shutting down gracefully...');
+  server.close(() => {
+    console.log('✅ Server closed');
+    process.exit(0);
+  });
 });
 
 export default app;
