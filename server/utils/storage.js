@@ -12,7 +12,7 @@ const STORAGE_ROOT = path.join(__dirname, '../storage');
 // ========== ATOMIC FILE OPERATIONS ==========
 /**
  * Atomic write: write to temp file, then rename
- * Prevents corruption from partial writes
+ * Prevents corruption from partial writes (internal)
  */
 async function atomicWrite(filePath, data) {
   const tempPath = `${filePath}.tmp`;
@@ -36,18 +36,49 @@ async function atomicWrite(filePath, data) {
 }
 
 /**
- * Read JSON file with error handling
+ * Atomic write with full path resolution
+ * Used by public APIs
  */
-async function readJSON(filePath) {
-  try {
-    const data = await fs.readFile(filePath, 'utf8');
-    return JSON.parse(data);
-  } catch (error) {
-    if (error.code === 'ENOENT') {
-      return null;
+export async function atomicWriteFile(relativePath, data) {
+  const fullPath = path.join(STORAGE_ROOT, relativePath);
+  return atomicWrite(fullPath, data);
+}
+
+/**
+ * Read file as string
+ */
+export async function readFile(filePath) {
+  const fullPath = path.join(STORAGE_ROOT, filePath);
+  return fs.readFile(fullPath, 'utf8');
+}
+
+/**
+ * Delete file
+ */
+export async function deleteFile(filePath) {
+  const fullPath = path.join(STORAGE_ROOT, filePath);
+  return fs.unlink(fullPath);
+}
+
+/**
+ * Get all files in a collection as objects
+ */
+export async function getCollection(collectionName) {
+  const collectionPath = path.join(STORAGE_ROOT, collectionName);
+  const files = await listDir(collectionPath).catch(() => []);
+  const items = [];
+
+  for (const file of files) {
+    if (!file.endsWith('.json')) continue;
+    try {
+      const data = await readJSON(path.join(collectionPath, file));
+      if (data) items.push(data);
+    } catch (error) {
+      console.warn(`Failed to read ${file}:`, error.message);
     }
-    throw new Error(`Failed to read ${filePath}: ${error.message}`);
   }
+
+  return items;
 }
 
 /**

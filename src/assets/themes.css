@@ -1,0 +1,353 @@
+/**
+ * SALTEDHASH Complete Visual Theme System
+ * Production-grade CSS for all code rendering presets
+ */
+
+/* ========================================
+   CORE CODE RENDERING WRAPPER
+   ======================================== */
+.code-renderer {
+  font-family: 'Fira Code', 'JetBrains Mono', 'Monaco', 'Courier New', monospace;
+  direction: ltr;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  line-height: 1.6;
+  tab-size: 2;
+  font-size: 13px;
+  overflow: auto;
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.code-renderer pre {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+}
+
+.token {
+  display: inline;
+}
+
+/* ========================================
+   THEME 1: DRACULA CLASSIC
+   ========================================*/
+.theme-dracula_classic {
+  background: #282a36;
+  color: #f8f8f2;
+}
+
+.theme-dracula_classic .token.keyword {
+  color: #ff79c6;
+  font-weight: bold;
+}
+
+.theme-dracula_classic .token.string {
+  color: #f1fa8c;
+}
+
+.theme-dracula_classic .token.comment {
+  color: #6272a4;
+  font-style: italic;
+}
+
+.theme-dracula_classic .token.number {
+  color: #bd93f9;
+}
+
+.theme-dracula_classic .token.function {
+  color: #50fa7b;
+}
+
+.theme-dracula_classic .token.operator {
+  color: #ff79c6;
+}
+
+.theme-dracula_classic .token.class-name {
+  color: #8be9fd;
+}
+
+.theme-dracula_classic .token.punctuation {
+  color: #f8f8f2;
+}
+
+.theme-dracula_classic .token.boolean {
+  color: #bd93f9;
+}
+
+.theme-dracula_classic .token.constant {
+  color: #bd93f9;
+}
+
+/* ========================================
+   THEME 2: NORD FROST
+   ======================================== */
+.theme-nord_frost {
+  background: #2e3440;
+  color: #d8dee9;
+}
+
+.theme-nord_frost .token.keyword {
+  color: #81a1c1;
+  font-weight: 500;
+}
+
+.theme-nord_frost .token.string {
+  color: #a3be8c;
+}
+
+.theme-nord_frost .token.comment {
+  color: #4c566a;
+  font-style: italic;
+}
+
+.theme-nord_frost .token.number {
+  color: #b48ead;
+}
+
+.theme-nord_frost .token.function {
+  color: #8fbcbb;
+}
+
+.theme-nord_frost .token.operator {
+  color: #81a1c1;
+}
+
+.theme-nord_frost .token.class-name {
+  color: #8fbcbb;
+}
+
+.theme-nord_frost .token.punctuation {
+  color: #d8dee9;
+}
+
+.theme-nord_frost .token.boolean {
+  color: #81a1c1;
+}
+
+.theme-nord_frost .token.constant {
+  color: #81a1c1;
+}
+
+/* ========================================
+   THEME 3: CYBERPUNK NEON
+   ======================================== */
+.theme-cyberpunk_neon {
+  background: #0a0a0a;
+  color: #00f0ff;
+}
+
+.theme-cyberpunk_neon .token.keyword {
+  color: #f30067;
+  text-shadow: 0 0 8px rgba(243, 0, 103, 0.6);
+  font-weight: bold;
+}
+
+.theme-cyberpunk_neon .token.string {
+  color: #00f0ff;
+  text-shadow: 0 0 6px rgba(0, 240, 255, 0.4);
+}
+
+.theme-cyberpunk_neon .token.comment {
+  color: #005577;
+  font-style: italic;
+}
+
+.theme-cyberpunk_neon .token.number {
+  color: #ff0055;
+}
+
+.theme-cyberpunk_neon .token.function {
+  color: #fffb00;
+  text-shadow: 0 0 8px rgba(255, 251, 0, 0.5);
+}
+
+.theme-cyberpunk_neon .token.operator {
+  color: #00f0ff;
+}
+
+.theme-cyberpunk_neon .token.class-name {
+  color: #fffb00;
+}
+
+.theme-cyberpunk_neon .token.punctuation {
+  color: #00f0ff;
+}
+
+.theme-cyberpunk_neon .token.boolean {
+  color: #ff0055;
+}
+
+.theme-cyberpunk_neon .token.constant {
+  color: #ff0055;
+}
+
+/* ========================================
+   THEME 4: MINIMAL LIGHT
+   ======================================== */
+.theme-minimal_light {
+  background: #ffffff;
+  color: #1a1a1a;
+}
+
+.theme-minimal_light .token.keyword {
+  color: #0077aa;
+  font-weight: bold;
+}
+
+.theme-minimal_light .token.string {
+  color: #669900;
+}
+
+.theme-minimal_light .token.comment {
+  color: #999999;
+  font-style: italic;
+}
+
+.theme-minimal_light .token.number {
+  color: #d73a49;
+}
+
+.theme-minimal_light .token.function {
+  color: #005a9c;
+}
+
+.theme-minimal_light .token.operator {
+  color: #0077aa;
+}
+
+.theme-minimal_light .token.class-name {
+  color: #6f42c1;
+}
+
+.theme-minimal_light .token.punctuation {
+  color: #1a1a1a;
+}
+
+.theme-minimal_light .token.boolean {
+  color: #d73a49;
+}
+
+.theme-minimal_light .token.constant {
+  color: #d73a49;
+}
+
+/* ========================================
+   THEME 5: GITHUB DARK
+   ======================================== */
+.theme-github_dark {
+  background: #0d1117;
+  color: #c9d1d9;
+}
+
+.theme-github_dark .token.keyword {
+  color: #ff7b72;
+}
+
+.theme-github_dark .token.string {
+  color: #a5d6ff;
+}
+
+.theme-github_dark .token.comment {
+  color: #8b949e;
+  font-style: italic;
+}
+
+.theme-github_dark .token.number {
+  color: #79c0ff;
+}
+
+.theme-github_dark .token.function {
+  color: #d2a8ff;
+}
+
+.theme-github_dark .token.operator {
+  color: #ff7b72;
+}
+
+.theme-github_dark .token.class-name {
+  color: #79c0ff;
+}
+
+.theme-github_dark .token.punctuation {
+  color: #c9d1d9;
+}
+
+.theme-github_dark .token.boolean {
+  color: #79c0ff;
+}
+
+.theme-github_dark .token.constant {
+  color: #79c0ff;
+}
+
+/* ========================================
+   POSTCARD WRAPPER STYLES
+   ======================================== */
+.code-postcard {
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  max-width: 600px;
+}
+
+.postcard-header {
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.1);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.postcard-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.postcard-code {
+  flex: 1;
+  overflow-x: auto;
+}
+
+.postcard-footer {
+  padding: 0.75rem 1rem;
+  background: rgba(0, 0, 0, 0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ========================================
+   RESPONSIVE ADJUSTMENTS
+   ======================================== */
+@media (max-width: 640px) {
+  .code-renderer {
+    font-size: 12px;
+    padding: 1rem;
+  }
+
+  .postcard-header h3 {
+    font-size: 14px;
+  }
+}
+
+/* ========================================
+   ACCESSIBILITY
+   ======================================== */
+@media (prefers-reduced-motion: reduce) {
+  .theme-cyberpunk_neon .token {
+    text-shadow: none;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .theme-minimal_light {
+    background: #1e1e1e;
+    color: #e0e0e0;
+  }
+}

@@ -25,6 +25,10 @@ app.use(cors({
 app.use(express.json({ limit: '64kb' }));
 app.use(express.urlencoded({ limit: '64kb', extended: true }));
 
+// PILLAR 2: Telemetry middleware
+import systemTelemetry from './middleware/telemetry.js';
+app.use(systemTelemetry);
+
 // Request logging middleware
 app.use((req, res, next) => {
   const timestamp = new Date().toISOString();
@@ -34,7 +38,28 @@ app.use((req, res, next) => {
 
 // ========== API ROUTES ==========
 import apiRoutes from './routes/api.js';
+import publicApiRoutes from './routes/public-api.js';
 app.use('/api/v1', apiRoutes);
+app.use('/api/public/v1', publicApiRoutes);
+
+// PILLAR 3: Admin diagnostics endpoint
+import AdminDiagnosticsController from './controllers/adminDiagnostics.js';
+app.get('/api/v1/admin/diagnostics', AdminDiagnosticsController.getMetrics);
+
+// Filesystem monitor status endpoint
+app.get('/api/v1/admin/monitor-status', (req, res) => {
+  // Security: Validate admin token
+  const adminToken = req.headers['x-saltedhash-admin-token'];
+  if (!adminToken || adminToken !== process.env.ADMIN_SECRET_KEY) {
+    return res.status(403).json({ error: 'Access denied' });
+  }
+
+  return res.json({
+    success: true,
+    monitor: filesystemMonitor.getStatus(),
+    history: filesystemMonitor.getRecoveryHistory(10)
+  });
+});
 
 // ========== HEALTH CHECK ==========
 app.get('/health', (req, res) => {
@@ -74,7 +99,9 @@ app.use((req, res) => {
 });
 
 // ========== START SERVER ==========
-const server = app.listen(PORT, () => {
+import { filesystemMonitor } from './utils/filesystemMonitor.js';
+
+const server = app.listen(PORT, async () => {
   console.log(`
 ╔═══════════════════════════════════════════╗
 ║  ⚡ SALTEDHASH Dev Suite                 ║
@@ -85,6 +112,10 @@ const server = app.listen(PORT, () => {
 ║  TIME: ${new Date().toISOString()}   ║
 ╚═══════════════════════════════════════════╝
   `);
+
+  // Start filesystem monitor (auto-recovery for corrupted JSON files)
+  filesystemMonitor.start();
+  console.log('✅ Filesystem monitor active');
 });
 
 // Graceful shutdown
